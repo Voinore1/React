@@ -3,14 +3,18 @@ import { Button, Flex, Heading, HStack, Input, Spacer } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 import { toaster } from "../ui/toaster";
 import { useAccountContext } from "@/contexts/account.context";
+import axios from "axios";
+
+const api = import.meta.env.VITE_ACCOUNT_API_URL;
 
 export default function NavBar() {
 
     const logout = () => {
+        axios.post(api + "/logout");
         accountService.logout();
         clear();
         toaster.create({
-            description: "Logged out seccssfully!",
+            description: "Logged out successfully!",
             type: "success"
         })
     }
@@ -19,8 +23,12 @@ export default function NavBar() {
 
   return (
     <Flex as="nav" p="10px" alignItems="center" borderColor="gray.300" borderWidth="2px" rounded="md" borderTopWidth="0">
-        <Heading as="h1">Bids<span className="ampersant">&</span>Cars</Heading>
-        <Button variant="ghost" color="gray.600">Auctions</Button>
+        <Link to="/">
+            <Heading as="h1">Bids<span className="ampersant">&</span>Cars</Heading>
+        </Link>
+        <Link to="/">
+            <Button variant="ghost" color="gray.600">Auctions</Button>
+        </Link>
         <Button borderRadius="full" colorPalette="green">Sell a car</Button>
         <Spacer />
 

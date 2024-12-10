@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import { tokenService } from "@/sevices/token.service";
+import React, { useContext, useEffect } from "react";
 
 export type AccountContextType = {
     email: string | null;
@@ -11,6 +12,16 @@ export const AccountContext = React.createContext<AccountContextType | null>(nul
 
 export const AccountProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     const [email, setEmail] = React.useState<string | null>(null);
+
+    useEffect(() => {
+        const token = tokenService.get();
+        if (token) {
+            // Assuming the token payload contains the email
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            setEmail(payload.Email);
+            console.log("Email: " + payload.Email);
+        }
+    }, []);
 
     const clear = () => setEmail(null); 
     const isAuth = () => email !== null;

@@ -1,11 +1,13 @@
-import { Button, Fieldset, Input, Stack } from "@chakra-ui/react"
+import { Box, Button, Fieldset, Input, Stack, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
-import { useNavigate, Form } from "react-router-dom";
+import { useNavigate, Form, Link } from "react-router-dom";
 import { toaster } from "@/components/ui/toaster"
 import axios from "axios";
 import { accountService } from "@/sevices/accounts.service";
 import { useState } from "react";
 import { useAccountContext } from "@/contexts/account.context";
+import { InputGroup } from "@/components/ui/input-group";
+import { KeyRound, User } from "lucide-react";
 
 const api = import.meta.env.VITE_ACCOUNT_API_URL;
 
@@ -21,14 +23,15 @@ const Login: React.FC = () => {
 
         axios.post(api + "/login", {Username, Password}).then(res => {
             if(res.status === 200){
-                console.log("logined");
-                accountService.login(res.data.token);
+                
+                const payload = JSON.parse(atob(res.data.accessToken.split('.')[1]));
+                setEmail(payload.Email);
+
+                accountService.login(payload.Email);
                 toaster.create({
                     description: "Signed in seccssfully!",
                     type: "success"
                 })
-
-                setEmail(Username);
 
                 navigate(-1);
             }
@@ -48,17 +51,22 @@ const Login: React.FC = () => {
         </Stack>
 
         <Fieldset.Content p="10px">
-            <Field label="Email addres">
-            <Input name="username" type="text" value={Username} 
-            onChange={(e) => setMail(e.target.value)} placeholder="Enter username"/>
-            </Field>
+            <InputGroup startElement={<User/>}>
+                <Input name="username" type="text" value={Username} 
+                onChange={(e) => setMail(e.target.value)} placeholder="Enter username"/>
+            </InputGroup>
 
-            <Field label="Password">
-            <Input name="password" type="password" value={Password} 
-            onChange={(e) => setPassword(e.target.value)} placeholder="Enter password"/>
-            </Field>
-
+            <InputGroup startElement={<KeyRound/>}>
+                <Input name="password" type="password" value={Password} 
+                onChange={(e) => setPassword(e.target.value)} placeholder="Enter password"/>
+            </InputGroup>
         </Fieldset.Content>
+
+        <Box m="7px" alignSelf="center">
+            <Link to="/register">
+                <Text color="green.600">Don't have account?</Text>
+            </Link>
+        </Box>
 
         <Button colorPalette="green" type="submit" alignSelf="center">
             Login
