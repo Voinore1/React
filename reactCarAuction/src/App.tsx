@@ -6,6 +6,7 @@ import MyAuctions from './pages/MyAuctions'
 import ProductDetails from './pages/ProductDetails'
 import Login from './pages/Login'
 import Registr from './pages/Registr'
+import SellCar from './pages/SellCar'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route path='details/:id' element={<ProductDetails/>}/>
       <Route path='login' element={<Login/>}/>
       <Route path='register' element={<Registr/>}/>
+      <Route path='SellCar' element={<SellCar/>}/>
     </Route>
   )
 )

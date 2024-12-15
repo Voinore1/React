@@ -29,7 +29,9 @@ export default function NavBar() {
         <Link to="/">
             <Button variant="ghost" color="gray.600">Auctions</Button>
         </Link>
-        <Button borderRadius="full" colorPalette="green">Sell a car</Button>
+        <Link to="/SellCar">
+            <Button borderRadius="full" colorPalette="green">Sell a car</Button>
+        </Link>
         <Spacer />
 
         <HStack gap="5px">
